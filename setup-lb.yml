@@ -1,0 +1,8 @@
+# setup-lb.yml
+
+---
+  - hosts: loadbalancers
+    become: true
+    roles:
+      - loadbalancer
+        

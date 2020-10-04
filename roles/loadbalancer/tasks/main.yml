@@ -1,0 +1,22 @@
+---
+# tasks file for roles/loadbalancer
+- name: Update all the yum packages for webservers and loadbalancers
+  yum: name=*  state=latest
+
+- name: install apache in load balancers
+  yum: name=httpd state=present
+
+- name: Start the apache and ensure it starts when we reboot
+  service: name=httpd state=started enabled=yes
+
+- name: Creating the template
+  template:
+    src: lb-config.j2
+    dest: /etc/httpd/conf.d/lb.conf
+    owner: bin
+    group: wheel
+    mode: 064
+  notify: Restarting the apache
+
+- name: Check the status of the apache
+  command: service httpd status

@@ -1,0 +1,4 @@
+---
+# handlers file for roles/loadbalancer
+- name: Restarting the apache
+  service: name=httpd state=restarted

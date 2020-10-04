@@ -1,0 +1,43 @@
+---
+# tasks file for roles/webservers
+- name: Update all the yum packages for webservers and loadbalancers
+  yum: name=*  state=latest
+
+- name: Installing services apache and php in webservers
+  yum:
+    name:
+      - httpd
+      - php
+    state: present
+
+- name: Start the apache and ensure it starts when we reboot
+  service: name=httpd state=started enabled=yes
+
+- name: Upload the php file in the webserver
+  copy:
+    src: ../files/index.php
+    dest: "{{path_to_app}}"
+    mode: 0755 
+
+- name: Creating a simple info page using Gathering facts
+  copy:
+    dest: "{{path_to_app}}/info.php"
+    content: "<h1> Info about the web servers {{ansible_hostname}} </h1>"
+
+- name: See the directory content
+  command: ls -la {{path_to_app}}
+  register: dir_content
+
+- name: Debug the directory contents
+  debug: 
+    msg: "{{dir_content}}"
+        
+- name: Configure php.ini file
+  lineinfile:
+    path: /etc/php.ini
+    regexp: ^short_open_tag
+    line: 'short_open_tag=on'
+  notify: restarting apache
+
+- name: Check the status of the apache
+  command: service httpd status
