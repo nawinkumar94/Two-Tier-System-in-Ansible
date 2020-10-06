@@ -1,0 +1,24 @@
+plugin: aws_ec2
+
+boto_profile: default
+
+# Enter the region to deploy in
+regions:
+  - us-east-1
+
+#set aws_access_key and secret_key.
+aws_access_key: AKIA432A6ZKMWQG24P4P
+aws_secret_key: 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
+
+filters:
+   instance-state-name: running
+# Enter the VPC-ID from terraform outputs or aws console
+   vpc-id: vpc-2c3ad751
+
+hostnames:
+    - ip-address
+
+keyed_groups:
+    - key: tags.Tier
+      separator: ''
+#strict_permissions: False
