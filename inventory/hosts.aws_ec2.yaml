@@ -7,8 +7,8 @@ regions:
   - us-east-1
 
 #set aws_access_key and secret_key.
-aws_access_key: AKIA432A6ZKMWQG24P4P
-aws_secret_key: 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
+aws_access_key: # mention access_key
+aws_secret_key: # mention secret_key
 
 filters:
    instance-state-name: running
